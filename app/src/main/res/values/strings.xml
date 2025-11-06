@@ -5,4 +5,9 @@
     <string name="west">WEST</string>
     <string name="south">SOUTH</string>
     <string name="secondary_activity">NAVIGATE TO SECONDARY ACTIVITY</string>
+    <string name="title_activity_colocviu11_secondary">Colocviu1_1SecondaryActivity</string>
+    <string name="register">Register</string>
+    <string name="cancel">Cancel</string>
+    <string name="secondary_activity_zero">NAVIGATE TO SECONDARY ACTIVITY (RESTART)</string>
+
 </resources>

@@ -1,11 +1,15 @@
 package ro.pub.cs.systems.eim.Colocviu1_1
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -22,6 +26,7 @@ class Colocviu1_1MainActivity : ComponentActivity() {
     private lateinit var south_button : Button
     private lateinit var directions_text : EditText
     private var number = 0
+    private var builder = StringBuilder()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_colocviu1_1_main)
@@ -30,7 +35,6 @@ class Colocviu1_1MainActivity : ComponentActivity() {
         west_button = findViewById<Button>(R.id.west_button)
         south_button = findViewById<Button>(R.id.south_button)
         directions_text = findViewById<EditText>(R.id.directions_edit_text)
-        val builder = StringBuilder()
         north_button.setOnClickListener {
             number++
             builder.append("North ")
@@ -52,6 +56,33 @@ class Colocviu1_1MainActivity : ComponentActivity() {
             builder.append("South ")
             directions_text.setText(builder.toString())
         }
+
+        val activityResultsLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                Toast.makeText(this, "The activity returned with result REGISTER", Toast.LENGTH_LONG).show()
+            }
+            else if (result.resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(this, "The activity returned with result CANCELED", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        val navigateToSecondaryActivityButton = findViewById<Button>(R.id.second_activity_button)
+        navigateToSecondaryActivityButton.setOnClickListener {
+            val intent = Intent(this, Colocviu1_1SecondaryActivity::class.java)
+            intent.putExtra("builder", builder.toString())
+            activityResultsLauncher.launch(intent)
+        }
+
+        val navigateToSecondaryActivityButtonZero = findViewById<Button>(R.id.second_activity_button_zero)
+        navigateToSecondaryActivityButtonZero.setOnClickListener {
+            val intent = Intent(this, Colocviu1_1SecondaryActivity::class.java)
+            intent.putExtra("builder", "")
+            builder = StringBuilder()
+            number = 0
+            directions_text.setText("")
+            activityResultsLauncher.launch(intent)
+        }
+
 
     }
     override fun onSaveInstanceState(outState: Bundle) {
